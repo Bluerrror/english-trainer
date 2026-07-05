@@ -52,6 +52,16 @@ Grammar, vocabulary, listening and more, in a fast Duolingo-style app that insta
 
 You'll get an **"E" icon** on your home screen that opens **fullscreen** and **works offline**. On Android/Chrome, use the **⋮ menu → Install app**.
 
+## 🤖 Install on Android
+
+Download the ready-made app: **[english-trainer.apk](https://github.com/Bluerrror/english-trainer/releases/latest/download/english-trainer.apk)** (from the [Releases](https://github.com/Bluerrror/english-trainer/releases) page).
+
+1. Open the downloaded file on your phone.
+2. If asked, allow installing from this source.
+3. Launch **English Trainer** from your app drawer — fullscreen, offline-capable (requires Chrome installed).
+
+Alternatively, open the web app in Chrome and use **⋮ → Install app**.
+
 ## 🛠️ Tech
 
 - A **single `index.html`** plus a vocabulary pack (`vocab.js`) — vanilla HTML, CSS and JavaScript. **Zero dependencies, no build step.**
