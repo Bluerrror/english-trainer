@@ -377,6 +377,9 @@
   .rstars{font-size:38px;letter-spacing:8px;margin:0 0 10px;min-height:46px;}
   .rstars .dim{filter:grayscale(1);opacity:.3;}
 
+  /* Persian (RTL) text runs render correctly inside the LTR layout */
+  .wen,.subword,.sheet .ans{unicode-bidi:plain-text;}
+
   /* level selector */
   .levselect{display:flex;align-items:center;gap:7px;margin-top:14px;flex-wrap:wrap;}
   .levselect .lab{font-size:12px;font-weight:800;color:#8189ad;margin-right:2px;letter-spacing:.4px;}
@@ -621,7 +624,7 @@
   <!-- ============ WORDS / DICTIONARY ============ -->
   <div class="words scroll hidden" id="words">
     <h2 class="page">Dictionary</h2>
-    <div class="searchbox">🔍<input id="wsearch" type="text" placeholder="Search German or English…" autocomplete="off"></div>
+    <div class="searchbox">🔍<input id="wsearch" type="text" placeholder="Search English or Persian…" autocomplete="off"></div>
     <div class="wchips" id="wchips"></div>
     <div class="wlist" id="wlist"></div>
     <div style="height:10px"></div>
@@ -731,6 +734,7 @@
 </div>
 
 <script src="vocab.js"></script>
+<script src="fa.js"></script>
 <script>
 /* ============================================================
    DATA
@@ -945,17 +949,17 @@ function gPlural(){const n=R(NOUNS.filter(x=>x.pl));const wrong=[n.de+'s',n.de+'
  return {tag:'Plural',prompt:`Plural of “${ARTWORD[n.g]} ${n.de}”`,mode:'mc',img:NOUN_IMG[n.de],stem:`ein ${n.de} → viele ___`,trans:`one ${n.en} → many`,answer:n.pl,options:opts(n.pl,wrong),
   explain:`die <b>${n.pl}</b>. German has five plural patterns — memorise each plural with its noun.`};}
 function gTransDeEn(){const kind=R(['noun','verb','adj']);
- if(kind==='noun'){const n=R(NOUNS);return {tag:'Vocabulary',prompt:'What does this mean?',mode:'mc',big:n.en,read:n.en,answer:n.de,options:opts(n.de,shuffle(NOUNS).slice(0,8).map(x=>x.de)),trans:'',explain:`${NOUN_IMG[n.de]?NOUN_IMG[n.de]+' ':''}<b>${n.en}</b> = ${n.de}.`};}
- if(kind==='verb'){const v=R(VERBS);const b=enBase(v.en);return {tag:'Vocabulary',prompt:'What does this verb mean?',mode:'mc',big:'to '+b,read:'to '+b,answer:v.inf,options:opts(v.inf,shuffle(VERBS).slice(0,8).map(x=>x.inf)),trans:'',explain:`<b>to ${b}</b> = ${v.inf}.`};}
- const a=R(ADJ);return {tag:'Vocabulary',prompt:'What does this word mean?',mode:'mc',img:ADJ_IMG[a.de],big:a.en,read:a.en,answer:a.de,options:opts(a.de,shuffle(ADJ).slice(0,8).map(x=>x.de)),trans:'',explain:`<b>${a.en}</b> = ${a.de}.`};}
-function gTransEnDe(){const n=R(NOUNS);return {tag:'Vocabulary',prompt:'Say it in English',mode:'mc',img:NOUN_IMG[n.de],big:n.de,answer:n.en,options:opts(n.en,shuffle(NOUNS).slice(0,8).map(x=>x.en)),trans:'',sayAnswer:n.en,explain:`${NOUN_IMG[n.de]?NOUN_IMG[n.de]+' ':''}${n.de} = <b>${n.en}</b>.`};}
+ if(kind==='noun'){const n=R(NOUNS);return {tag:'Vocabulary',prompt:'What does this mean?',mode:'mc',big:n.en,read:n.en,answer:n.fa,options:opts(n.fa,shuffle(NOUNS).slice(0,8).map(x=>x.fa)),trans:'',explain:`${NOUN_IMG[n.de]?NOUN_IMG[n.de]+' ':''}<b>${n.en}</b> = ${n.fa}.`};}
+ if(kind==='verb'){const v=R(VERBS);const b=enBase(v.en);return {tag:'Vocabulary',prompt:'What does this verb mean?',mode:'mc',big:'to '+b,read:'to '+b,answer:v.fa,options:opts(v.fa,shuffle(VERBS).slice(0,8).map(x=>x.fa)),trans:'',explain:`<b>to ${b}</b> = ${v.fa}.`};}
+ const a=R(ADJ);return {tag:'Vocabulary',prompt:'What does this word mean?',mode:'mc',img:ADJ_IMG[a.de],big:a.en,read:a.en,answer:a.fa,options:opts(a.fa,shuffle(ADJ).slice(0,8).map(x=>x.fa)),trans:'',explain:`<b>${a.en}</b> = ${a.fa}.`};}
+function gTransEnDe(){const n=R(NOUNS);return {tag:'Vocabulary',prompt:'Say it in English',mode:'mc',img:NOUN_IMG[n.de],big:n.fa,answer:n.en,options:opts(n.en,shuffle(NOUNS).slice(0,8).map(x=>x.en)),trans:'',sayAnswer:n.en,explain:`${NOUN_IMG[n.de]?NOUN_IMG[n.de]+' ':''}${n.fa} = <b>${n.en}</b>.`};}
 function gOpposite(){const cands=ADJ.filter(x=>x.opp&&ADJ.some(y=>y.de===x.opp));const a=R(cands);const oppEn=ADJ.find(y=>y.de===a.opp).en;
- return {tag:'Opposites',prompt:`Opposite of “${a.en}”`,mode:'mc',img:ADJ_IMG[a.de],big:a.en,read:a.en,answer:oppEn,options:opts(oppEn,shuffle(ADJ).slice(0,10).map(x=>x.en)),trans:a.de,explain:`Opposite of <b>${a.en}</b> is <b>${oppEn}</b>.`};}
+ return {tag:'Opposites',prompt:`Opposite of “${a.en}”`,mode:'mc',img:ADJ_IMG[a.de],big:a.en,read:a.en,answer:oppEn,options:opts(oppEn,shuffle(ADJ).slice(0,10).map(x=>x.en)),trans:a.fa,explain:`Opposite of <b>${a.en}</b> is <b>${oppEn}</b>.`};}
 function gPicture(){const pics=NOUNS.filter(n=>PIC.includes(n.de)&&NOUN_IMG[n.de]);const n=R(pics);
  const distract=shuffle(pics.filter(x=>x.de!==n.de)).slice(0,3);
  const options=shuffle([n.en,...distract.map(x=>x.en)]);
- return {tag:'Picture',prompt:'Which word matches the picture?',mode:'mc',img:NOUN_IMG[n.de],bigImg:true,answer:n.en,options,trans:n.de,sayAnswer:n.en,
-  explain:`${NOUN_IMG[n.de]} <b>${n.en}</b> = ${n.de}.`};}
+ return {tag:'Picture',prompt:'Which word matches the picture?',mode:'mc',img:NOUN_IMG[n.de],bigImg:true,answer:n.en,options,trans:n.fa,sayAnswer:n.en,
+  explain:`${NOUN_IMG[n.de]} <b>${n.en}</b> = ${n.fa}.`};}
 function gVerbPrep(){const vp=R(VERBPREP);return {tag:'Verb + preposition',prompt:`Which preposition goes with “${vp.v}”?`,mode:'mc',stem:`${cap(vp.v)} ___ …`,trans:vp.en,answer:vp.p,options:opts(vp.p,['auf','an','für','um','mit','von','nach','zu','über','aus','bei']),
   explain:`<b>${vp.v} ${vp.p}</b> (+ ${vp.c==='akk'?'Akkusativ':'Dativ'}) = ${vp.en}.`};}
 function gSep(){const v=R(SEPV);return {tag:'Separable verb',prompt:`Where does the prefix go? (${v.inf})`,mode:'mc',stem:`Ich ${v.ich} um 7 Uhr ___ .`,trans:`${v.en} at 7.`,answer:v.pre,options:opts(v.pre,['auf','an','aus','ein','mit','ab','vor']),
@@ -979,10 +983,10 @@ const SENTENCES=[
  {w:['Möchtest','du','einen','Tee'],a:'Möchtest du einen Tee',en:'Would you like a tea?'}
 ];
 function gBuild(){const st=R(SENTENCES);const wds=st.en.replace(/[?!.,]/g,'').split(' ');
- return {tag:'Build the sentence',prompt:'Tap the words in the right order',mode:'build',words:shuffle(wds),answer:wds.join(' '),alts:[],trans:st.a,sayAnswer:st.en,explain:`Correct order: <b>${st.en}</b>.`};}
+ return {tag:'Build the sentence',prompt:'Tap the words in the right order',mode:'build',words:shuffle(wds),answer:wds.join(' '),alts:[],trans:st.fa||'',sayAnswer:st.en,explain:`Correct order: <b>${st.en}</b>.`};}
 function gKonjunktiv(){const items=[
   {s:'Wenn ich reich ___, würde ich reisen.',a:'wäre',o:['wäre','war','bin','gewesen'],ex:'Konjunktiv II of sein → <b>wäre</b> (unreal condition).',tr:'If I were rich, I would travel.'},
-  {s:'Ich ___ gern einen Kaffee.',a:'hätte',o:['hätte','habe','hatte','haben'],ex:'Polite wish → <b>ich hätte gern</b> (K II of haben).',tr:'I would like a coffee.'},
+  {s:'Ich ___ gern einen Kaffee.',a:'hätte',o:['hätte','habe','hatte','داشتن'],ex:'Polite wish → <b>ich hätte gern</b> (K II of haben).',tr:'I would like a coffee.'},
   {s:'___ du mir bitte helfen?',a:'Könntest',o:['Könntest','Kannst','Konntest','Kann'],ex:'Polite request → <b>Könntest du…?</b> (K II of können).',tr:'Could you please help me?'},
   {s:'An deiner Stelle ___ ich zum Arzt gehen.',a:'würde',o:['würde','werde','wurde','will'],ex:'Advice → <b>würde</b> + infinitive.',tr:'In your place I would go to the doctor.'}];
  const it=R(items);return {tag:'Konjunktiv II',prompt:'Choose the subjunctive form',mode:'mc',stem:it.s,trans:it.tr,answer:it.a,options:shuffle(it.o),explain:it.ex};}
@@ -1005,27 +1009,27 @@ const hasSpeech = typeof window!=='undefined' && 'speechSynthesis' in window;
 /* ---------- v2: new question generators ---------- */
 function gListenWord(){const n=R(NOUNS.filter(x=>/^[a-z]+$/.test(x.en)));const ans=n.en;
  return {tag:'Listening',prompt:'Tap what you hear',mode:'mc',speak:n.en,autoSpeak:true,options:opts(ans,shuffle(NOUNS).map(x=>x.en)),answer:ans,
-  trans:n.de,sayAnswer:n.en,explain:`🔊 <b>${n.en}</b> = ${n.de}.`};}
+  trans:n.fa,sayAnswer:n.en,explain:`🔊 <b>${n.en}</b> = ${n.fa}.`};}
 function gListenPhrase(){const p=R(PHRASES);const ans=p.en;
  return {tag:'Listening',prompt:'What did you hear?',mode:'mc',speak:p.en,autoSpeak:true,options:opts(ans,shuffle(PHRASES).map(x=>x.en)),answer:ans,
-  trans:p.de,sayAnswer:p.en,explain:`🔊 <b>${p.en}</b> = ${p.de}.`};}
+  trans:p.fa,sayAnswer:p.en,explain:`🔊 <b>${p.en}</b> = ${p.fa}.`};}
 function gTypeNoun(){const n=R(NOUNS.filter(x=>/^[a-z]+$/.test(x.en)));
- return {tag:'Type it',prompt:'Type the English word',mode:'type',img:NOUN_IMG[n.de],big:n.de,answer:n.en,accept:[n.en],
-  trans:n.de,sayAnswer:n.en,explain:`${n.de} = <b>${n.en}</b>.`};}
+ return {tag:'Type it',prompt:'Type the English word',mode:'type',img:NOUN_IMG[n.de],big:n.fa,answer:n.en,accept:[n.en],
+  trans:n.fa,sayAnswer:n.en,explain:`${n.fa} = <b>${n.en}</b>.`};}
 function gTypeVerb(){const v=R(VERBS);const b=enBase(v.en);
- return {tag:'Type it',prompt:'Type the English verb (without “to”)',mode:'type',big:v.inf,answer:b,accept:[b,'to '+b],
-  sayAnswer:'to '+b,explain:`${v.inf} = <b>to ${b}</b>.`};}
+ return {tag:'Type it',prompt:'Type the English verb (without “to”)',mode:'type',big:v.fa,answer:b,accept:[b,'to '+b],
+  sayAnswer:'to '+b,explain:`${v.fa} = <b>to ${b}</b>.`};}
 function gTypeListen(){const n=R(NOUNS.filter(x=>/^[a-z]+$/.test(x.en)));
  return {tag:'Listen & type',prompt:'Type the word you hear',mode:'type',speak:n.en,autoSpeak:true,big:'🎧',answer:n.en,accept:[n.en],
-  trans:n.de,sayAnswer:n.en,explain:`🔊 <b>${n.en}</b> = ${n.de}.`};}
+  trans:n.fa,sayAnswer:n.en,explain:`🔊 <b>${n.en}</b> = ${n.fa}.`};}
 function gMatch(){const set=shuffle(NOUNS.filter(n=>/^[a-z]+$/.test(n.en)&&n.en.length<=9)).slice(0,5);
- return {tag:'Match pairs',prompt:'Match English ↔ German',mode:'match',pairs:set.map(n=>({de:n.en,en:n.de})),explain:'Nice — all pairs matched!'};}
+ return {tag:'Match pairs',prompt:'Match English ↔ German',mode:'match',pairs:set.map(n=>({de:n.en,en:n.fa})),explain:'Nice — all pairs matched!'};}
 function gMatchVerb(){const set=shuffle(VERBS.filter(v=>enBase(v.en).length<=9)).slice(0,5);
- return {tag:'Match verbs',prompt:'Match verb ↔ meaning',mode:'match',pairs:set.map(v=>({de:enBase(v.en),en:v.inf})),explain:'Nice — all pairs matched!'};}
+ return {tag:'Match verbs',prompt:'Match verb ↔ meaning',mode:'match',pairs:set.map(v=>({de:enBase(v.en),en:v.fa})),explain:'Nice — all pairs matched!'};}
 function gTrueFalse(){const n=R(NOUNS);const truth=Math.random()<0.5;
- const shown=truth?n.de:R(NOUNS.filter(x=>x.de!==n.de)).de;const ans=truth?'True':'False';
+ const shown=truth?n.fa:R(NOUNS.filter(x=>x.fa!==n.fa)).fa;const ans=truth?'True':'False';
  return {tag:'True or false',prompt:'Is this translation correct?',mode:'mc',stem:`${n.en} = „${shown}“`,answer:ans,options:['True','False'],
-  sayAnswer:n.en,explain:`<b>${n.en}</b> = ${n.de} → the statement is <b>${truth?'true ✓':'false ✕'}</b>.`};}
+  sayAnswer:n.en,explain:`<b>${n.en}</b> = ${n.fa} → the statement is <b>${truth?'true ✓':'false ✕'}</b>.`};}
 function gListenNumber(){const n=RI(0,99);const ans=numEN(n);
  return {tag:'Listen · numbers',prompt:'Which number did you hear?',mode:'mc',speak:ans,autoSpeak:true,big:'🔢',answer:String(n),
   options:opts(String(n),[String(n),String(RI(0,99)),String(RI(0,99)),String((n+1)%100),String((n+7)%100)]),sayAnswer:ans,
@@ -1102,8 +1106,8 @@ PHRASES.push(
 SENTENCES.push(
  {w:['Ich','gehe','morgen','ins','Kino'],a:'Ich gehe morgen ins Kino',en:'I go to the cinema tomorrow',alts:['Morgen gehe ich ins Kino']},
  {w:['Er','hat','ein','neues','Auto','gekauft'],a:'Er hat ein neues Auto gekauft',en:'He bought a new car'},
- {w:['Wir','wollen','im','Sommer','nach','Italien','fahren'],a:'Wir wollen im Sommer nach Italien fahren',en:'We want to go to Italy in summer',alts:['Im Sommer wollen wir nach Italien fahren']},
- {w:['Sie','kann','sehr','gut','singen'],a:'Sie kann sehr gut singen',en:'She can sing very well'},
+ {w:['Wir','wollen','im','Sommer','nach','Italien','رانندگی کردن'],a:'Wir wollen im Sommer nach Italien fahren',en:'We want to go to Italy in summer',alts:['Im Sommer wollen wir nach Italien fahren']},
+ {w:['Sie','kann','sehr','gut','آواز خواندن'],a:'Sie kann sehr gut singen',en:'She can sing very well'},
  {w:['Ich','denke,','dass','Deutsch','schön','ist'],a:'Ich denke, dass Deutsch schön ist',en:'I think that German is beautiful'},
  {w:['Wenn','es','regnet,','bleiben','wir','zu','Hause'],a:'Wenn es regnet, bleiben wir zu Hause',en:'If it rains, we stay home'},
  {w:['Ich','habe','keine','Zeit'],a:'Ich habe keine Zeit',en:'I have no time'}
@@ -1114,11 +1118,11 @@ function gTypeConj(){const v=R(ENVERBS.filter(x=>x!=='be'));const st=R(['He','Sh
  return {tag:'Conjugate & type',prompt:`Type the he/she/it form of “${v}”${deGloss(v)}`,mode:'type',stem:`${st} ___ every day.`,answer:ans,accept:[ans],
   sayAnswer:`${st.toLowerCase()} ${ans}`,explain:`${st} → <b>${ans}</b>.`};}
 function gPhraseTrans(){const p=R(PHRASES);
- if(Math.random()<0.5)return {tag:'Phrases',prompt:'What does this mean?',mode:'mc',big:p.en,read:p.en,answer:p.de,options:opts(p.de,shuffle(PHRASES).map(x=>x.de)),trans:'',explain:`<b>${p.en}</b> = ${p.de}.`};
- return {tag:'Phrases',prompt:'Say it in English',mode:'mc',big:p.de,answer:p.en,options:opts(p.en,shuffle(PHRASES).map(x=>x.en)),trans:'',sayAnswer:p.en,explain:`${p.de} = <b>${p.en}</b>.`};}
+ if(Math.random()<0.5)return {tag:'Phrases',prompt:'What does this mean?',mode:'mc',big:p.en,read:p.en,answer:p.fa,options:opts(p.fa,shuffle(PHRASES).map(x=>x.fa)),trans:'',explain:`<b>${p.en}</b> = ${p.fa}.`};
+ return {tag:'Phrases',prompt:'Say it in English',mode:'mc',big:p.fa,answer:p.en,options:opts(p.en,shuffle(PHRASES).map(x=>x.en)),trans:'',sayAnswer:p.en,explain:`${p.fa} = <b>${p.en}</b>.`};}
 function gBuildListen(){const cands=PHRASES.filter(x=>{const n=x.en.split(' ').length;return n>=3&&n<=6;});const p=R(cands);
  const wds=p.en.replace(/[?!.,]/g,'').split(' ');
- return {tag:'Listen & build',prompt:'Tap what you hear, in order',mode:'build',speak:p.en,autoSpeak:true,words:shuffle(wds),answer:wds.join(' '),alts:[],trans:p.de,sayAnswer:p.en,explain:`🔊 <b>${p.en}</b> = ${p.de}.`};}
+ return {tag:'Listen & build',prompt:'Tap what you hear, in order',mode:'build',speak:p.en,autoSpeak:true,words:shuffle(wds),answer:wds.join(' '),alts:[],trans:p.fa,sayAnswer:p.en,explain:`🔊 <b>${p.en}</b> = ${p.fa}.`};}
 /* ---------- v5: third content batch — family, food, body, city ---------- */
 NOUNS.push(
  {de:'Onkel',en:'uncle',g:'m',pl:'Onkel'},{de:'Tante',en:'aunt',g:'f',pl:'Tanten'},
@@ -1190,31 +1194,31 @@ function numEN(n){
 }
 /* [base, past, participle, German gloss] */
 const EN_IRR=[
- ['be','was','been','sein'],['have','had','had','haben'],['do','did','done','machen'],['go','went','gone','gehen'],
- ['come','came','come','kommen'],['see','saw','seen','sehen'],['say','said','said','sagen'],['get','got','got','bekommen'],
- ['make','made','made','machen'],['know','knew','known','wissen'],['think','thought','thought','denken'],
- ['take','took','taken','nehmen'],['give','gave','given','geben'],['find','found','found','finden'],
- ['tell','told','told','erzählen'],['become','became','become','werden'],['leave','left','left','verlassen'],
- ['feel','felt','felt','fühlen'],['put','put','put','legen'],['bring','brought','brought','bringen'],
- ['begin','began','begun','beginnen'],['keep','kept','kept','behalten'],['hold','held','held','halten'],
- ['write','wrote','written','schreiben'],['stand','stood','stood','stehen'],['hear','heard','heard','hören'],
- ['let','let','let','lassen'],['mean','meant','meant','bedeuten'],['meet','met','met','treffen'],
- ['run','ran','run','laufen'],['pay','paid','paid','bezahlen'],['sit','sat','sat','sitzen'],
- ['speak','spoke','spoken','sprechen'],['read','read','read','lesen'],['grow','grew','grown','wachsen'],
- ['lose','lost','lost','verlieren'],['fall','fell','fallen','fallen'],['send','sent','sent','schicken'],
- ['build','built','built','bauen'],['understand','understood','understood','verstehen'],
- ['draw','drew','drawn','zeichnen'],['break','broke','broken','brechen'],['spend','spent','spent','ausgeben'],
- ['cut','cut','cut','schneiden'],['rise','rose','risen','steigen'],['drive','drove','driven','fahren'],
- ['buy','bought','bought','kaufen'],['wear','wore','worn','tragen'],['choose','chose','chosen','wählen'],
- ['eat','ate','eaten','essen'],['drink','drank','drunk','trinken'],['sleep','slept','slept','schlafen'],
- ['fly','flew','flown','fliegen'],['forget','forgot','forgotten','vergessen'],['swim','swam','swum','schwimmen'],
- ['throw','threw','thrown','werfen'],['catch','caught','caught','fangen'],['teach','taught','taught','unterrichten'],
- ['sell','sold','sold','verkaufen'],['fight','fought','fought','kämpfen'],['steal','stole','stolen','stehlen'],
- ['sing','sang','sung','singen'],['win','won','won','gewinnen'],['hurt','hurt','hurt','verletzen'],
- ['hit','hit','hit','schlagen'],['cost','cost','cost','kosten'],['shut','shut','shut','schließen'],
- ['ride','rode','ridden','reiten'],['hide','hid','hidden','verstecken'],['shake','shook','shaken','schütteln'],
- ['bite','bit','bitten','beißen'],['blow','blew','blown','blasen'],['freeze','froze','frozen','frieren'],
- ['wake','woke','woken','aufwachen']
+ ['be','was','been','بودن'],['have','had','had','داشتن'],['do','did','done','انجام دادن'],['go','went','gone','رفتن'],
+ ['come','came','come','آمدن'],['see','saw','seen','دیدن'],['say','said','said','گفتن'],['get','got','got','گرفتن'],
+ ['make','made','made','انجام دادن'],['know','knew','known','دانستن'],['think','thought','thought','فکر کردن'],
+ ['take','took','taken','گرفتن (برداشتن)'],['give','gave','given','دادن'],['find','found','found','پیدا کردن'],
+ ['tell','told','told','تعریف کردن'],['become','became','become','شدن'],['leave','left','left','ترک کردن'],
+ ['feel','felt','felt','احساس کردن'],['put','put','put','گذاشتن'],['bring','brought','brought','آوردن'],
+ ['begin','began','begun','شروع کردن'],['keep','kept','kept','نگه داشتن'],['hold','held','held','نگه داشتن (گرفتن)'],
+ ['write','wrote','written','نوشتن'],['stand','stood','stood','ایستادن'],['hear','heard','heard','شنیدن'],
+ ['let','let','let','اجازه دادن'],['mean','meant','meant','معنی دادن'],['meet','met','met','ملاقات کردن'],
+ ['run','ran','run','دویدن'],['pay','paid','paid','پرداختن'],['sit','sat','sat','نشستن'],
+ ['speak','spoke','spoken','صحبت کردن'],['read','read','read','خواندن'],['grow','grew','grown','رشد کردن'],
+ ['lose','lost','lost','باختن'],['fall','fell','fallen','افتادن'],['send','sent','sent','فرستادن'],
+ ['build','built','built','ساختن'],['understand','understood','understood','فهمیدن'],
+ ['draw','drew','drawn','کشیدن (طراحی)'],['break','broke','broken','شکستن'],['spend','spent','spent','خرج کردن'],
+ ['cut','cut','cut','بریدن'],['rise','rose','risen','بالا رفتن'],['drive','drove','driven','رانندگی کردن'],
+ ['buy','bought','bought','خریدن'],['wear','wore','worn','پوشیدن'],['choose','chose','chosen','انتخاب کردن'],
+ ['eat','ate','eaten','خوردن'],['drink','drank','drunk','نوشیدن'],['sleep','slept','slept','خوابیدن'],
+ ['fly','flew','flown','پرواز کردن'],['forget','forgot','forgotten','فراموش کردن'],['swim','swam','swum','شنا کردن'],
+ ['throw','threw','thrown','پرت کردن'],['catch','caught','caught','گرفتن (قاپیدن)'],['teach','taught','taught','درس دادن'],
+ ['sell','sold','sold','فروختن'],['fight','fought','fought','جنگیدن'],['steal','stole','stolen','دزدیدن'],
+ ['sing','sang','sung','آواز خواندن'],['win','won','won','بردن'],['hurt','hurt','hurt','صدمه زدن'],
+ ['hit','hit','hit','زدن'],['cost','cost','cost','قیمت داشتن'],['shut','shut','shut','بستن'],
+ ['ride','rode','ridden','سوار شدن'],['hide','hid','hidden','پنهان کردن'],['shake','shook','shaken','تکان دادن'],
+ ['bite','bit','bitten','گاز گرفتن'],['blow','blew','blown','دمیدن'],['freeze','froze','frozen','یخ زدن'],
+ ['wake','woke','woken','بیدار شدن']
 ];
 const EN_REG=['play','work','watch','study','cook','clean','open','close','ask','answer','learn','live','love','like',
  'need','want','walk','talk','listen','look','help','visit','call','stop','start','finish','wash','carry','try',
@@ -1222,7 +1226,7 @@ const EN_REG=['play','work','watch','study','cook','clean','open','close','ask',
 const ENVERBS=[...EN_IRR.map(x=>x[0]),...EN_REG];
 function enBase(en){return en.replace(/^to /,'').split(/[\/(]/)[0].trim().split(' ')[0];}
 function deGloss(v){const irr=EN_IRR.find(x=>x[0]===v);if(irr)return ' ('+irr[3]+')';
- const m=VERBS.find(x=>enBase(x.en)===v);return m?' ('+m.inf+')':'';}
+ const m=VERBS.find(x=>enBase(x.en)===v);return m&&m.fa?' ('+m.fa+')':'';}
 function enPast(v){const irr=EN_IRR.find(x=>x[0]===v);if(irr)return irr[1];
  if(/e$/.test(v))return v+'d'; if(/[^aeiou]y$/.test(v))return v.slice(0,-1)+'ied';
  if(/^(stop|plan|shop|chat|drop|hug|grab|travel)$/.test(v))return v+v.slice(-1)+'ed';
@@ -1233,22 +1237,23 @@ function en3rd(v){const m={have:'has',do:'does',go:'goes',be:'is'};if(m[v])retur
 function enIng(v){const m={be:'being',see:'seeing',agree:'agreeing',lie:'lying',die:'dying',tie:'tying'};if(m[v])return m[v];
  if(/^(run|sit|swim|stop|get|put|cut|hit|shut|begin|forget|win|plan|shop|travel)$/.test(v))return v+v.slice(-1)+'ing';
  if(/e$/.test(v)&&!/ee$/.test(v))return v.slice(0,-1)+'ing'; return v+'ing';}
+const EN_UNCOUNT=['advice','homework','information','furniture','luggage','news','money','bread','weather','traffic','music','knowledge','luck'];
 const EN_PLU_IRR={man:'men',woman:'women',child:'children',tooth:'teeth',foot:'feet',mouse:'mice',person:'people',
  fish:'fish',sheep:'sheep',deer:'deer',knife:'knives',wife:'wives',life:'lives',leaf:'leaves',wolf:'wolves',
  shelf:'shelves',half:'halves',thief:'thieves',loaf:'loaves',potato:'potatoes',tomato:'tomatoes',hero:'heroes'};
 function enPlural(w){if(EN_PLU_IRR[w])return EN_PLU_IRR[w];
  if(/(s|x|z|ch|sh)$/.test(w))return w+'es'; if(/[^aeiou]y$/.test(w))return w.slice(0,-1)+'ies'; return w+'s';}
-function enCountables(){return NOUNS.filter(n=>/^[a-z]+$/.test(n.en)&&n.pl);}
+function enCountables(){return NOUNS.filter(n=>/^[a-z]+$/.test(n.en)&&n.pl&&!EN_UNCOUNT.includes(n.en));}
 
 function gAAn(){const n=R(enCountables());const w=n.en;
  const AN_EX=['hour','honest','heir'];const A_EX=['university','uniform','unit','user','one','european'];
  let a=/^[aeiou]/.test(w)?'an':'a';
  if(AN_EX.includes(w))a='an'; if(A_EX.includes(w))a='a';
- return {tag:'a / an',prompt:'Pick the right article',mode:'mc',img:NOUN_IMG[n.de],stem:`___ ${w}`,trans:n.de,answer:a,options:['a','an'],
+ return {tag:'a / an',prompt:'Pick the right article',mode:'mc',img:NOUN_IMG[n.de],stem:`___ ${w}`,trans:n.fa,answer:a,options:['a','an'],
   sayAnswer:a+' '+w,explain:`It is the first <b>sound</b> that counts → <b>${a} ${w}</b>.`};}
 function gPluralEN(){const n=R(enCountables());const w=n.en;const ans=enPlural(w);
  const cand=[ans,w+'s',w+'es',w.slice(0,-1)+'ies',w+'en'].filter((x,i,arr)=>arr.indexOf(x)===i).slice(0,4);
- return {tag:'Plural',prompt:`Plural of “${w}”`,mode:'mc',img:NOUN_IMG[n.de],stem:`one ${w} → two ___`,trans:n.de,answer:ans,options:shuffle(cand),
+ return {tag:'Plural',prompt:`Plural of “${w}”`,mode:'mc',img:NOUN_IMG[n.de],stem:`one ${w} → two ___`,trans:n.fa,answer:ans,options:shuffle(cand),
   sayAnswer:'two '+ans,explain:`two <b>${ans}</b>.${EN_PLU_IRR[w]?' Irregular plural!':''}`};}
 function gTypePluralEN(){const n=R(enCountables());const w=n.en;const ans=enPlural(w);
  return {tag:'Plural · type',prompt:`Type the plural of “${w}”`,mode:'type',img:NOUN_IMG[n.de],stem:`two ___`,answer:ans,accept:[ans],
@@ -1273,14 +1278,14 @@ function gPPerf(){const pool=EN_IRR.filter(e=>e[1]!==e[2]);const e=R(pool);const
  return {tag:'Present perfect',prompt:`Participle of “${e[0]}” (${e[3]})`,mode:'mc',stem:`${st} has already ___ .`,answer:e[2],options:shuffle(cand),
   sayAnswer:e[2],explain:`have/has + <b>${e[2]}</b> (${e[0]} – ${e[1]} – ${e[2]}).`};}
 const MODAL_EN=[
- {s:'You ___ stop at a red light.',a:'must',o:['must','can','might','would'],tr:'Du musst bei Rot anhalten.',ex:'Obligation → must.'},
- {s:'___ you help me, please?',a:'Can',o:['Can','Must','Should','May'],tr:'Kannst du mir bitte helfen?',ex:'Ability / request → can.'},
- {s:'You look tired. You ___ go to bed.',a:'should',o:['should','can','may','must not'],tr:'Du solltest ins Bett gehen.',ex:'Advice → should.'},
- {s:'She ___ speak three languages.',a:'can',o:['can','must','should','might'],tr:'Sie kann drei Sprachen sprechen.',ex:'Ability → can.'},
- {s:'You ___ smoke here. It is forbidden.',a:'must not',o:['must not','should','can','might'],tr:'Du darfst hier nicht rauchen.',ex:'Prohibition → must not.'},
- {s:'Take an umbrella — it ___ rain later.',a:'might',o:['might','must','should','can not'],tr:'Es könnte später regnen.',ex:'Possibility → might.'},
- {s:'I ___ get up early tomorrow.',a:'have to',o:['have to','might','would','could'],tr:'Ich muss morgen früh aufstehen.',ex:'External obligation → have to.'},
- {s:'___ I open the window?',a:'May',o:['May','Must','Would','Have'],tr:'Darf ich das Fenster öffnen?',ex:'Polite permission → may.'}
+ {s:'You ___ stop at a red light.',a:'must',o:['must','can','might','would'],tr:'باید پشت چراغ قرمز بایستی.',ex:'Obligation → must.'},
+ {s:'___ you help me, please?',a:'Can',o:['Can','Must','Should','May'],tr:'می‌توانی کمکم کنی؟',ex:'Ability / request → can.'},
+ {s:'You look tired. You ___ go to bed.',a:'should',o:['should','can','may','must not'],tr:'بهتر است بخوابی.',ex:'Advice → should.'},
+ {s:'She ___ speak three languages.',a:'can',o:['can','must','should','might'],tr:'او می‌تواند به سه زبان صحبت کند.',ex:'Ability → can.'},
+ {s:'You ___ smoke here. It is forbidden.',a:'must not',o:['must not','should','can','might'],tr:'اینجا سیگار کشیدن ممنوع است.',ex:'Prohibition → must not.'},
+ {s:'Take an umbrella — it ___ rain later.',a:'might',o:['might','must','should','can not'],tr:'ممکن است بعداً باران ببارد.',ex:'Possibility → might.'},
+ {s:'I ___ get up early tomorrow.',a:'have to',o:['have to','might','would','could'],tr:'فردا باید زود بیدار شوم.',ex:'External obligation → have to.'},
+ {s:'___ I open the window?',a:'May',o:['May','Must','Would','Have'],tr:'اجازه هست پنجره را باز کنم؟',ex:'Polite permission → may.'}
 ];
 function gModalEN(){const m=R(MODAL_EN);
  return {tag:'Modal verbs',prompt:'Choose the modal verb',mode:'mc',stem:m.s,trans:m.tr,answer:m.a,options:shuffle(m.o.slice()),
@@ -1306,47 +1311,47 @@ function gCompEN(){const c=R(COMP_EN);const sup=Math.random()<0.4;
   stem:sup?`It is the ___ of all.`:`This one is ___ than that one.`,answer:ans,options:shuffle(cand),
   sayAnswer:ans,explain:`${c[0]} → ${c[1]} → ${c[2]}.`};}
 const PREP_EN=[
- {s:'The lesson starts ___ 3 o’clock.',a:'at',tr:'um 3 Uhr'},{s:'We meet ___ Monday.',a:'on',tr:'am Montag'},
- {s:'She was born ___ July.',a:'in',tr:'im Juli'},{s:'I drink coffee ___ the morning.',a:'in',tr:'am Morgen'},
- {s:'Owls sleep ___ day and hunt ___ night.',a:'at',tr:'nachts',o:['at','in','on','by']},
- {s:'The picture hangs ___ the wall.',a:'on',tr:'an der Wand'},{s:'The keys are ___ the box.',a:'in',tr:'in der Schachtel'},
- {s:'I will wait ___ the bus stop.',a:'at',tr:'an der Bushaltestelle'},{s:'The book is ___ the table.',a:'on',tr:'auf dem Tisch'},
- {s:'They live ___ Berlin.',a:'in',tr:'in Berlin'},{s:'Someone is ___ the door.',a:'at',tr:'an der Tür'},
- {s:'My office is ___ the second floor.',a:'on',tr:'im zweiten Stock'},{s:'He was born ___ 2010.',a:'in',tr:'im Jahr 2010'},
- {s:'See you ___ the weekend!',a:'at',tr:'am Wochenende',o:['at','on','in','by']}
+ {s:'The lesson starts ___ 3 o’clock.',a:'at',tr:'ساعت ۳'},{s:'We meet ___ Monday.',a:'on',tr:'روز دوشنبه'},
+ {s:'She was born ___ July.',a:'in',tr:'در ژوئیه'},{s:'I drink coffee ___ the morning.',a:'in',tr:'صبح‌ها'},
+ {s:'Owls sleep ___ day and hunt ___ night.',a:'at',tr:'شب‌ها',o:['at','in','on','by']},
+ {s:'The picture hangs ___ the wall.',a:'on',tr:'روی دیوار'},{s:'The keys are ___ the box.',a:'in',tr:'داخل جعبه'},
+ {s:'I will wait ___ the bus stop.',a:'at',tr:'در ایستگاه اتوبوس'},{s:'The book is ___ the table.',a:'on',tr:'روی میز'},
+ {s:'They live ___ Berlin.',a:'in',tr:'در برلین'},{s:'Someone is ___ the door.',a:'at',tr:'پشت در'},
+ {s:'My office is ___ the second floor.',a:'on',tr:'در طبقه دوم'},{s:'He was born ___ 2010.',a:'in',tr:'در سال ۲۰۱۰'},
+ {s:'See you ___ the weekend!',a:'at',tr:'آخر هفته',o:['at','on','in','by']}
 ];
 function gPrepEN(){const it=R(PREP_EN);
  return {tag:'Prepositions',prompt:'in, on or at?',mode:'mc',stem:it.s,trans:it.tr,answer:it.a,options:shuffle((it.o||['in','on','at','by']).slice()),
   sayAnswer:it.s.replace(/_+/g,it.a),explain:`→ <b>${it.a}</b> (${it.tr}).`};}
 
 const CLOZE=[
- {s:'I have lived here ___ 2015.',a:'since',o:['since','for','from','at'],tr:'Ich wohne seit 2015 hier.',ex:'Point in time → since.'},
- {s:'She has worked there ___ five years.',a:'for',o:['for','since','from','ago'],tr:'Sie arbeitet seit fünf Jahren dort.',ex:'Duration → for.'},
- {s:'There ___ a lot of people at the party.',a:'were',o:['were','was','is','be'],tr:'Es waren viele Leute auf der Party.',ex:'people = plural → were.'},
- {s:'How ___ money do you have?',a:'much',o:['much','many','a lot','few'],tr:'Wie viel Geld hast du?',ex:'money is uncountable → much.'},
- {s:'How ___ apples are in the bag?',a:'many',o:['many','much','lot','little'],tr:'Wie viele Äpfel sind in der Tüte?',ex:'apples are countable → many.'},
- {s:'If it rains, we ___ stay home.',a:'will',o:['will','would','did','are'],tr:'Wenn es regnet, bleiben wir zu Hause.',ex:'First conditional → will.'},
- {s:'If I ___ rich, I would travel the world.',a:'were',o:['were','am','will be','would'],tr:'Wäre ich reich, würde ich die Welt bereisen.',ex:'Second conditional → were.'},
- {s:'The man ___ lives next door is a doctor.',a:'who',o:['who','which','what','whose'],tr:'Der Mann, der nebenan wohnt, ist Arzt.',ex:'Person → who.'},
- {s:'The book ___ I read was great.',a:'which',o:['which','who','what','where'],tr:'Das Buch, das ich las, war großartig.',ex:'Thing → which / that.'},
- {s:'I am used ___ getting up early.',a:'to',o:['to','for','at','of'],tr:'Ich bin es gewohnt, früh aufzustehen.',ex:'be used to + -ing.'},
- {s:'She is taller ___ her brother.',a:'than',o:['than','as','then','that'],tr:'Sie ist größer als ihr Bruder.',ex:'Comparison → than.'},
- {s:'This is ___ interesting book I have ever read.',a:'the most',o:['the most','most','more','the more'],tr:'Das ist das interessanteste Buch, das ich je gelesen habe.',ex:'Superlative of long adjectives → the most.'},
- {s:'We are going ___ visit Berlin next week.',a:'to',o:['to','for','at','on'],tr:'Wir werden nächste Woche Berlin besuchen.',ex:'going to + infinitive.'},
- {s:'Is there ___ milk in the fridge?',a:'any',o:['any','some','a','many'],tr:'Ist noch Milch im Kühlschrank?',ex:'Questions → any.'}
+ {s:'I have lived here ___ 2015.',a:'since',o:['since','for','from','at'],tr:'از سال ۲۰۱۵ اینجا زندگی می‌کنم.',ex:'Point in time → since.'},
+ {s:'She has worked there ___ five years.',a:'for',o:['for','since','from','ago'],tr:'پنج سال است آنجا کار می‌کند.',ex:'Duration → for.'},
+ {s:'There ___ a lot of people at the party.',a:'were',o:['were','was','is','be'],tr:'افراد زیادی در مهمانی بودند.',ex:'people = plural → were.'},
+ {s:'How ___ money do you have?',a:'much',o:['much','many','a lot','few'],tr:'چقدر پول داری؟',ex:'money is uncountable → much.'},
+ {s:'How ___ apples are in the bag?',a:'many',o:['many','much','lot','little'],tr:'چند سیب در کیسه است؟',ex:'apples are countable → many.'},
+ {s:'If it rains, we ___ stay home.',a:'will',o:['will','would','did','are'],tr:'اگر باران ببارد، خانه می‌مانیم.',ex:'First conditional → will.'},
+ {s:'If I ___ rich, I would travel the world.',a:'were',o:['were','am','will be','would'],tr:'اگر ثروتمند بودم، دور دنیا سفر می‌کردم.',ex:'Second conditional → were.'},
+ {s:'The man ___ lives next door is a doctor.',a:'who',o:['who','which','what','whose'],tr:'مردی که همسایه ماست پزشک است.',ex:'Person → who.'},
+ {s:'The book ___ I read was great.',a:'which',o:['which','who','what','where'],tr:'کتابی که خواندم عالی بود.',ex:'Thing → which / that.'},
+ {s:'I am used ___ getting up early.',a:'to',o:['to','for','at','of'],tr:'به زود بیدار شدن عادت دارم.',ex:'be used to + -ing.'},
+ {s:'She is taller ___ her brother.',a:'than',o:['than','as','then','that'],tr:'او از برادرش قدبلندتر است.',ex:'Comparison → than.'},
+ {s:'This is ___ interesting book I have ever read.',a:'the most',o:['the most','most','more','the more'],tr:'این جالب‌ترین کتابی است که خوانده‌ام.',ex:'Superlative of long adjectives → the most.'},
+ {s:'We are going ___ visit Berlin next week.',a:'to',o:['to','for','at','on'],tr:'هفته آینده به برلین می‌رویم.',ex:'going to + infinitive.'},
+ {s:'Is there ___ milk in the fridge?',a:'any',o:['any','some','a','many'],tr:'شیر در یخچال هست؟',ex:'Questions → any.'}
 ];
 function gCloze(){const c=R(CLOZE);
  return {tag:'Fill the gap',prompt:'Complete the sentence',mode:'mc',stem:c.s,trans:c.tr,answer:c.a,options:shuffle(c.o.slice()),
   sayAnswer:c.s.replace('___',c.a).replace(/\s+\./,'.'),explain:c.ex};}
 const WFRAGEN=[
- {s:'___ is that? — My brother.',a:'Who',tr:'Wer ist das? — Mein Bruder.'},
- {s:'___ does it cost? — Ten euros.',a:'What',tr:'Was kostet es? — Zehn Euro.'},
- {s:'___ do you live? — In Berlin.',a:'Where',tr:'Wo wohnst du? — In Berlin.'},
- {s:'___ are you coming? — At eight.',a:'When',tr:'Wann kommst du? — Um acht.'},
- {s:'___ are you tired? — Because I slept badly.',a:'Why',tr:'Warum bist du müde?'},
- {s:'___ are you? — Fine, thanks.',a:'How',tr:'Wie geht es dir? — Gut, danke.'},
- {s:'___ bag is this? — It is mine.',a:'Whose',tr:'Wessen Tasche ist das?'},
- {s:'___ colour do you like, red or blue?',a:'Which',tr:'Welche Farbe magst du?'}
+ {s:'___ is that? — My brother.',a:'Who',tr:'او کیست؟ — برادرم.'},
+ {s:'___ does it cost? — Ten euros.',a:'What',tr:'قیمتش چند است؟ — ده یورو.'},
+ {s:'___ do you live? — In Berlin.',a:'Where',tr:'کجا زندگی می‌کنی؟ — در برلین.'},
+ {s:'___ are you coming? — At eight.',a:'When',tr:'کی می‌آیی؟ — ساعت هشت.'},
+ {s:'___ are you tired? — Because I slept badly.',a:'Why',tr:'چرا خسته‌ای؟'},
+ {s:'___ are you? — Fine, thanks.',a:'How',tr:'حالت چطور است؟ — خوبم، ممنون.'},
+ {s:'___ bag is this? — It is mine.',a:'Whose',tr:'این کیف مال کیست؟'},
+ {s:'___ colour do you like, red or blue?',a:'Which',tr:'کدام رنگ را دوست داری؟'}
 ];
 function gWFrage(){const w=R(WFRAGEN);const pool=['Who','What','Where','When','Why','How','Whose','Which'];
  return {tag:'Question words',prompt:'Pick the question word',mode:'mc',stem:w.s,trans:w.tr,answer:w.a,options:opts(w.a,pool),
@@ -1473,6 +1478,14 @@ if(window.EXTRA_VOCAB){
   (V.phrases||[]).forEach(p=>{if(p&&p.de&&!sP.has(p.de)){sP.add(p.de);PHRASES.push(p);}});
   Object.keys(V.imgs||{}).forEach(k=>{if(!NOUN_IMG[k])NOUN_IMG[k]=V.imgs[k];});
   (V.pics||[]).forEach(p=>{if(!PIC.includes(p)&&NOUN_IMG[p]&&sN.has(p))PIC.push(p);});
+}
+/* Persian (فارسی) support translations — keyed by the English words */
+if(window.FA){
+  NOUNS.forEach(n=>{n.fa=FA.n[n.en]||n.en;});
+  VERBS.forEach(v=>{v.fa=FA.v[enBase(v.en)]||('to '+enBase(v.en));});
+  ADJ.forEach(a=>{a.fa=FA.a[a.en]||a.en;});
+  PHRASES.forEach(p=>{p.fa=FA.p[p.en]||p.en;});
+  SENTENCES.forEach(x=>{x.fa=FA.s[x.en]||'';});
 }
 
 /* ---------- v4: structured course (A1 → B2) ---------- */
@@ -1821,10 +1834,10 @@ function renderWords(){
   $('wchips').querySelectorAll('.wchip').forEach(b=>b.onclick=()=>{wcat=b.dataset.c;renderWords();});
   const q=norm($('wsearch').value||'');
   let items=[];
-  if(wcat==='Nouns')items=NOUNS.map(n=>({word:n.en,en:n.de,sub:(/^[a-z]+$/.test(n.en)&&n.pl)?'plural: '+enPlural(n.en):'',say:n.en,img:NOUN_IMG[n.de]||''}));
-  if(wcat==='Verbs')items=VERBS.map(v=>{const b=enBase(v.en);return {word:'to '+b,en:v.inf,sub:`past: ${enPast(b)} · participle: ${enPP(b)}`,say:'to '+b,img:''};});
-  if(wcat==='Adjectives')items=ADJ.map(a=>{const o=a.opp?ADJ.find(y=>y.de===a.opp):null;return {word:a.en,en:a.de,sub:o?'opposite: '+o.en:'',say:a.en,img:ADJ_IMG[a.de]||''};});
-  if(wcat==='Phrases')items=PHRASES.map(p=>({word:p.en,en:p.de,sub:'',say:p.en,img:''}));
+  if(wcat==='Nouns')items=NOUNS.map(n=>({word:n.en,en:n.fa,sub:(/^[a-z]+$/.test(n.en)&&n.pl&&!EN_UNCOUNT.includes(n.en))?'plural: '+enPlural(n.en):'',say:n.en,img:NOUN_IMG[n.de]||''}));
+  if(wcat==='Verbs')items=VERBS.map(v=>{const b=enBase(v.en);return {word:'to '+b,en:v.fa,sub:`past: ${enPast(b)} · participle: ${enPP(b)}`,say:'to '+b,img:''};});
+  if(wcat==='Adjectives')items=ADJ.map(a=>{const o=a.opp?ADJ.find(y=>y.de===a.opp):null;return {word:a.en,en:a.fa,sub:o?'opposite: '+o.en:'',say:a.en,img:ADJ_IMG[a.de]||''};});
+  if(wcat==='Phrases')items=PHRASES.map(p=>({word:p.en,en:p.fa,sub:'',say:p.en,img:''}));
   if(q)items=items.filter(it=>norm(it.word).includes(q)||norm(it.en).includes(q));
   items.sort((a,b)=>a.word.localeCompare(b.word,'en'));
   const seen=new Set();items=items.filter(it=>{if(seen.has(it.word))return false;seen.add(it.word);return true;});

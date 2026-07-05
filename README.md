@@ -5,7 +5,7 @@
 # English Trainer
 
 **A beautiful, offline-first English trainer — from A1 to B2.**
-Grammar, vocabulary, listening and more, in a fast Duolingo-style app that installs to your home screen. German support translations. No account, no ads, no tracking.
+Grammar, vocabulary, listening and more, in a fast Duolingo-style app that installs to your home screen. **Persian (فارسی) support translations.** No account, no ads, no tracking.
 
 [![Open the app](https://img.shields.io/badge/▶_Open_the_app-Live-25b06e?style=for-the-badge)](https://bluerrror.github.io/english-trainer/)
 &nbsp;
@@ -24,7 +24,7 @@ Grammar, vocabulary, listening and more, in a fast Duolingo-style app that insta
 - **🔁 Mistake review** — wrong answers are saved automatically and replayed until you clear them.
 - **🎯 No repeats** — the question engine remembers what it asked and always serves fresh questions.
 - **🗓️ Daily quests & chest** — three rotating goals per day with a bonus-XP reward chest.
-- **📖 Massive built-in dictionary** — 1000+ nouns with plurals, 250+ verbs with past & participle forms, 130 adjectives and 100+ phrases, all searchable with audio and German translations.
+- **📖 Massive built-in dictionary** — 1000+ nouns with plurals, 250+ verbs with past & participle forms, 130 adjectives and 100+ phrases, all searchable with audio and Persian translations.
 - **🎧 Listening** — hear real English (your device's voices): tap what you hear, type it, or rebuild the sentence from tiles.
 - **🔊 Read-aloud & voices** — questions, words and sentences are read to you in English; mute anytime from the lesson bar, and pick your voice in Settings.
 - **🔗 Match pairs, ⌨️ typing, 🧩 sentence builder, 🖼️ pictures, ✅ true/false** — many distinct exercise types.
