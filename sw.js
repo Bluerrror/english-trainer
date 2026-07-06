@@ -1,5 +1,5 @@
 /* English Trainer service worker — offline caching */
-const CACHE = 'english-trainer-v2';
+const CACHE = 'english-trainer-v3';
 const ASSETS = [
   './',
   './index.html',
