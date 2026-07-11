@@ -1,10 +1,11 @@
 /* English Trainer service worker — offline caching */
-const CACHE = 'english-trainer-v3';
+const CACHE = 'english-trainer-v4';
 const ASSETS = [
   './',
   './index.html',
   './vocab.js',
   './fa.js',
+  './bank.js',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
